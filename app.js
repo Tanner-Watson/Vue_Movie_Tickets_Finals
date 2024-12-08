@@ -1,3 +1,7 @@
+//  Tanner Watson
+// CIS-131-W01
+
+
 // Movie Cards Component
 Vue.component('moviecards', {
     // create template for movie cards, image tag, card-body and all its necessary tags. Bind any necesarry vue elements to those html tags

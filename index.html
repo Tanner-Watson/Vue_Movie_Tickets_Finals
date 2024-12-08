@@ -4,24 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Emitter</title>
+    <title>Vue Movie Tickets</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+    <script src="app.js" defer></script>
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <!-- ***** I left all the elements from the event emitter tutorial...make sure to change the code as needed ***** -->
-    <div class="container">
-        <div id="app">
-            <h1>{{pageTitle}}</h1>
-            <badge v-bind:clicktotal=clickTotal> </badge>
-            <doggycards v-for="dog in dogs" v-bind:dogobj=dog v-on:buttclick=buttClicked($event)> </doggycards>
+    <!-- nav bar for header -->
+    <nav class="navbar navbar-light bg-light p-3">
+        <span class="navbar-brand mb-0 h1 font-weight-bold" style="font-size: 3.5rem;">Vue Movie Tickets</span>
+    </nav>
+
+    <!-- start of card container for the movies and cart-->
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+        <div id="app" class="text-center">
+
+            <!-- heading for entire section -->
+            <h2 class="text-center h1 mt-5">Top Rated Movies</h2>
+
+            <!-- Check if apiData exists and display a list of movies -->
+            <div v-if="apiData" class="d-flex justify-content-center flex-wrap">
+
+                <!-- iterate through displayedMovies array and create separate movie objects, bind ticketPrices to be used as a prop, and an event listener for the emitted event ticket-added to call the addToCart function   -->
+                <moviecards v-for="movie in displayedMovies" v-bind:movieobj="movie" :key="movie.id" class="m-2"
+                    :ticketPrices="ticketPrices" @ticket-added="addToCart">
+                </moviecards>
+            </div>
+
+            <!-- Show a message if no data is available -->
+            <div v-else>
+                <p>No data available</p>
+            </div>
+
+            <!-- Button to load more movies -->
+            <div v-if="apiData.length > numberOfMovies">
+                <button class="btn btn-primary m-4" @click="loadMoreMovies">Load More Movies</button>
+            </div>
+
+            <!-- cart section -->
+            <cart :cart="cart" :ticketPrices="ticketPrices" @remove-from-cart="removeFromCart"></cart>
+
+
         </div>
     </div>
-
-    <script src="app.js"></script>
 
 </body>
 
